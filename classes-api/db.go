@@ -13,9 +13,9 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
 
-const tableName = "Companies"
+const tableName = "Classes"
 
-var companiesUserSubGSI = "companiesUserSubGSI"
+var classesUserSubGSI = "classesUserSubGSI"
 
 // Declare a new DynamoDB instance. Note that this is safe for concurrent
 // use.

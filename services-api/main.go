@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/agustin-sarasua/gofit-companies-api/model"
-	"github.com/agustin-sarasua/gofit-companies-api/util"
+	"github.com/agustin-sarasua/gofit/model"
+	"github.com/agustin-sarasua/gofit/util"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/awslabs/aws-lambda-go-api-proxy/gin"

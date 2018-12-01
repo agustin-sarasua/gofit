@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/agustin-sarasua/gofit-companies-api/model"
-	"github.com/agustin-sarasua/gofit-companies-api/util"
+	"github.com/agustin-sarasua/gofit/model"
+	"github.com/agustin-sarasua/gofit/util"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"

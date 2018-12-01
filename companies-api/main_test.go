@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/agustin-sarasua/gofit-companies-api/util"
+	"github.com/agustin-sarasua/gofit/util"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/stretchr/testify/assert"

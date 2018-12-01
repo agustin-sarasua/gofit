@@ -33,7 +33,7 @@ Resources:
         - - 'arn:aws:apigateway:'
           - !Ref 'AWS::Region'
           - ':lambda:path/2015-03-31/functions/'
-          - !ImportValue gofit-custom-authorizer-lambda
+          - !ImportValue custom-authorizer-lambda
           - /invocations
       IdentitySource: method.request.header.Authorization
       Name: api-authorizer
@@ -59,7 +59,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: 'lambda:invokeFunction'
-                Resource: !ImportValue gofit-custom-authorizer-lambda
+                Resource: !ImportValue custom-authorizer-lambda
   
   # /classes Resource
   ApiGatewayClassesResource:
@@ -230,7 +230,7 @@ Resources:
       FunctionName: GoFitClassesApi
       Code:
         S3Bucket: !Sub ${prefix}-lambda-functions
-        S3Key: classes-lambda.zip
+        S3Key: classes-api.zip
       Handler: main
       MemorySize: 128
       Role: !GetAtt 
@@ -348,7 +348,7 @@ Resources:
       TableName: "Companies"
       GlobalSecondaryIndexes: 
         - 
-          IndexName: "companiesUserSubGSI"
+          IndexName: "classesUserSubGSI"
           KeySchema: 
             - 
               AttributeName: "UserSub"

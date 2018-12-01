@@ -17,10 +17,10 @@ Resources:
   customAuthorizerLambda:
     Type: 'AWS::Lambda::Function'
     Properties:
-      FunctionName: !Sub ${prefix}-custom-authorizer-${envParameter}
+      FunctionName: custom-authorizer-lambda
       Code:
         S3Bucket: gofit-lambda-functions
-        S3Key: api-gateway-authorizer.zip
+        S3Key: custom-authorizer-lambda.zip
       Handler: api-gateway-authorizer.lambda_handler
       MemorySize: 128
       Role: !GetAtt 
@@ -56,6 +56,6 @@ Outputs:
         - Arn
     Description: 'Custom Authorizer Lambda function ARN'
     Export:
-      Name: !Sub ${prefix}-custom-authorizer-lambda
+      Name: custom-authorizer-lambda
     
     
