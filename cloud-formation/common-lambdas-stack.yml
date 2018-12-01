@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Common Lambda Functions CloudFromation template
+Parameters:
+  prefix:
+    Type: String
+    Default: "gofit"
+    Description: "Resource prefix to use when creating necessary objects"
+    AllowedPattern: "^[a-z0-9][a-z0-9-]+$"
+    ConstraintDescription: "Resource prefix can only contain lower-case letters, numbers, and dashes"
+    MaxLength: 30
+  envParameter: 
+    Type: String
+    Default: dev
+    AllowedValues: [ dev, test, qa, prod ]
+    Description: Suffix to be added for names.
+Resources:
+  customAuthorizerLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Sub ${prefix}-custom-authorizer-${envParameter}
+      Code:
+        S3Bucket: gofit-lambda-functions
+        S3Key: api-gateway-authorizer.zip
+      Handler: api-gateway-authorizer.lambda_handler
+      MemorySize: 128
+      Role: !GetAtt 
+        - customAuthorizerLambdaRole
+        - Arn
+      Runtime: python2.7
+      Timeout: 60
+  customAuthorizerLambdaRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+Outputs:
+  AwsAccountId:
+    Value: !Ref 'AWS::AccountId'
+    Description: Account ID of the AWS account
+  AwsRegion:
+    Value: !Ref 'AWS::Region'
+    Description: Region of the AWS deployment
+  CustomAuthorizer:
+    Value:
+        Fn::GetAtt:
+        - customAuthorizerLambda
+        - Arn
+    Description: 'Custom Authorizer Lambda function ARN'
+    Export:
+      Name: !Sub ${prefix}-custom-authorizer-lambda
+    
+    
