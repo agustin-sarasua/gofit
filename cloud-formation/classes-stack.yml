@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Companies API CloudFromation template
+Description: Classes API CloudFromation template
 Parameters:
   prefix:
     Type: String
@@ -185,44 +185,6 @@ Resources:
           - !Ref ApiGatewayRestApi
           - /*
   
-  # CompanyServicesLambda Permission: Gives permition to the api gateway to excecute the CompanyServicesLambda Function
-  CompanyServicesLambdaPermission:
-    Type: 'AWS::Lambda::Permission'
-    Properties:
-      Action: 'lambda:invokeFunction'
-      FunctionName: !GetAtt 
-        - CompanyServicesLambda
-        - Arn
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Join 
-        - ''
-        - - 'arn:aws:execute-api:'
-          - !Ref 'AWS::Region'
-          - ':'
-          - !Ref 'AWS::AccountId'
-          - ':'
-          - !Ref ApiGatewayRestApi
-          - /*
-
-  # CompanyServicesLambda Permission: Gives permition to the api gateway to excecute the CompanyServicesLambda Function
-  CompanyStaffLambdaPermission:
-    Type: 'AWS::Lambda::Permission'
-    Properties:
-      Action: 'lambda:invokeFunction'
-      FunctionName: !GetAtt 
-        - CompanyStaffLambda
-        - Arn
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Join 
-        - ''
-        - - 'arn:aws:execute-api:'
-          - !Ref 'AWS::Region'
-          - ':'
-          - !Ref 'AWS::AccountId'
-          - ':'
-          - !Ref ApiGatewayRestApi
-          - /*
-
   # Lambda backend (golang lambda)
   Lambda:
     Type: 'AWS::Lambda::Function'
@@ -345,7 +307,7 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: "5"
         WriteCapacityUnits: "5"
-      TableName: "Companies"
+      TableName: "Classes"
       GlobalSecondaryIndexes: 
         - 
           IndexName: "classesUserSubGSI"
