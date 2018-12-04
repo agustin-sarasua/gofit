@@ -20,20 +20,25 @@ var errorLogger = log.New(os.Stderr, "ERROR ", log.Llongfile)
 var infoLogger = log.New(os.Stdout, "INFO ", log.Llongfile)
 
 func createClass(c *gin.Context) {
-	companyID := c.Param("id")
 	apiGwContext, _ := ginLambda.GetAPIGatewayContext(c.Request)
 	userSub := util.GetClaimsSub(apiGwContext)
-	e := model.NewCompanyService(companyID, userSub)
+	e := model.NewClass(userSub)
 	err := c.BindJSON(&e)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
 	}
-	// TODO validate UserSub exists
-	err = putCompanyService(&e)
+	err = validateCreateClass(&e)
 	if err != nil {
-		fmt.Printf("Error saving item in db %v", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+	}
+	// TODO validate UserSub exists
+	err = putClass(&e)
+	if err != nil {
+		fmt.Printf("Error saving class in db %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})

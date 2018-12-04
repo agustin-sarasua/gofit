@@ -9,8 +9,13 @@ import (
 // Company
 // Rol ->
 const (
+	TimeLayout string = "2006-01-02T15:04:05"
+
 	RolOwner string = "OWNER"
 	RolStaff string = "STAFF"
+
+	SourceAutomatic string = "AUTOMATIC"
+	SourceManual    string = "MANUAL"
 
 	StatusPending   string = "PENDING_CONFIRMATION"
 	StatusConfirmed string = "CONFIRMED"
@@ -20,6 +25,7 @@ const (
 	DocTypeStaff   string = "Staff"
 	DocTypeService string = "Service"
 	DocTypeCompany string = "Company"
+	DocTypeClass   string = "Class"
 
 	SexM string = "M"
 	SexW string = "W"
@@ -88,11 +94,25 @@ type Class struct {
 	MinBookings        int                 `json:"MinBookings,omitempty"`
 	MaxBookings        int                 `json:"MaxBookings,omitempty"`
 	StartTime          string              `json:"StartTime,omitempty"` // Inherited from service if not specified
-	Duration           int64               `json:"Duration,omitempty"`  // Minutes
+	Duration           time.Duration       `json:"Duration,omitempty"`  // Minutes
 	Place              *Place              `json:"Place,omitempty"`
 	Price              int64               `json:"Price,omitempty"`              // Inherited from service if not specified
 	CancellationPolicy *CancellationPolicy `json:"CancellationPolicy,omitempty"` // Inherited from service if not specified
 	Status             string              `json:"Status,omitempty"`             // CREATED -> PENDING_CONFIRMATION ->
+	Source             string              `json:"Source,omitempty"`             // AUTOMATIC, MANUAL
+}
+
+func NewClass(userSub string) Class {
+	c := Class{}
+	c.UserSub = userSub
+	c.MinBookings = 0
+	c.MaxBookings = 99
+	c.Price = 0
+	c.Status = StatusPending
+	c.Source = SourceManual
+	c.Duration = time.Minute * 60
+	c.StartTime = time.Now().Add(time.Minute * 60).Format(TimeLayout)
+	return c
 }
 
 type CancellationPolicy struct {
@@ -129,6 +149,6 @@ func NewCompany(userSub string) Company {
 	c.UserSub = userSub
 	c.Rol = RolOwner
 	c.Status = StatusActive
-	c.Timestamp = time.Now().Format("2006-01-02T15:04:05")
+	c.Timestamp = time.Now().Format(TimeLayout)
 	return c
 }
